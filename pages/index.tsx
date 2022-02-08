@@ -1,18 +1,36 @@
 import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
+import {useContext, useState, FormEvent} from 'react'
+import { AuthContext } from '../contexts/AuthContext';
+
 import styles from '../styles/Home.module.css'
 
-const Home: NextPage = () => {
-  return (
-    <div className={styles.container}>
-      
-        <h1 className={styles.title}>
-          Olá mundo!
-        </h1>
 
-    </div>
+
+export default function Home() {
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  
+  const { signIn } = useContext(AuthContext);
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+
+    const data = {
+      email,
+      password
+    }
+
+    await signIn(data);
+  }
+  
+  return (
+    <form onSubmit={handleSubmit} className={styles.container}>
+      <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
+      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button type="submit">Entrar</button>
+
+    </form>
   )
 }
 
-export default Home
+
