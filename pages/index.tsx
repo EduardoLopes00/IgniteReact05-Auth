@@ -25,9 +25,9 @@ export default function Home() {
   
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
-      <input type="text" value={email} onChange={e => setEmail(e.target.value)} />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <button type="submit">Entrar</button>
+      <input placeholder="Email" type="text" value={email} onChange={e => setEmail(e.target.value)} />
+      <input placeholder="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+      <button type="submit" onSubmit={(event) => handleSubmit(event)}>Entrar</button>
 
     </form>
   )
