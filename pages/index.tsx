@@ -9,7 +9,7 @@ import { withSSRGuest } from '../utils/withSSRGuest';
 
 
 export default function Home() {
-  const [email, setEmail] = useState<string>('');
+  const [email, setEmail] = useState<string>('diego@rocketseat.team');
   const [password, setPassword] = useState<string>('');
   
   const { signIn } = useContext(AuthContext);
@@ -36,6 +36,7 @@ export default function Home() {
 }
 
 export const getServerSideProps = withSSRGuest(async (ctx) => {
+  
   return {
     props: {}
   }

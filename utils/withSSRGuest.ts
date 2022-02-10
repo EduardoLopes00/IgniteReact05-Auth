@@ -8,6 +8,8 @@ import { parseCookies } from "nookies";
 // Is important mention that the ctx received by the returning function, comes from the SSR method who is calling it.
 // The generic 'P' below, comes from the SSR either. It specify that the function returned by the method itself shall be a GetServerSideProps return.
 
+// this function aims to redirect users who are already logged in to the dashboard page
+
 export function withSSRGuest<P>(fn: GetServerSideProps<P>) {
 
     return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
