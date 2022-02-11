@@ -30,7 +30,6 @@ export default function Home() {
       <input placeholder="Email" type="text" value={email} onChange={e => setEmail(e.target.value)} />
       <input placeholder="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} />
       <button type="submit" onSubmit={(event) => handleSubmit(event)}>Entrar</button>
-
     </form>
   )
 }

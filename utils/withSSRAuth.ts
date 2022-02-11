@@ -1,22 +1,48 @@
 import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { destroyCookie, parseCookies } from "nookies";
 import { AuthTokenError } from "../services/errors/AuthTokenError";
+import decode from 'jwt-decode'
+import { validadeUserPermissions } from "./validadeUserPermissions";
+
+type WithSSRAuthOptions = {
+    permissions?: string[];
+    roles?: string[]
+}
 
 // this function aims to redirect users who are not logged to login page
 
-export function withSSRAuth<P>(fn: GetServerSideProps<P>) {
+export function withSSRAuth<P>(fn: GetServerSideProps<P>, options?: WithSSRAuthOptions) {
 
     return async (ctx: GetServerSidePropsContext): Promise<GetServerSidePropsResult<P>> => {
         const cookies = parseCookies(ctx); //Now i'm passing the context to the Nookies func instead of undefined.
+        const token = cookies['nextauth.token'];
 
-        if (!cookies['nextauth.token']) {
+        if (!token) {
             return {
                 redirect: {
                     destination: '/',
                     permanent: false
+                } 
+            }
+        }
+
+        if (options) {
+            const user = decode<{permissions: string[], roles: string[] }>(token)
+            const {permissions, roles} = options
+            
+            const userHasValidPermissions = validadeUserPermissions({user, permissions, roles})
+
+            if (!userHasValidPermissions) {
+                return {
+                    redirect: {
+                        destination: '/dashboard',
+                        permanent: false
+
+                    }
                 }
             }
         }
+
 
         try {
             return await fn(ctx);
